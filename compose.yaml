@@ -1,0 +1,30 @@
+services:
+  backend:
+    build:
+      context: .
+    restart: always
+    depends_on:
+      - db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      SPRING_DATASOURCE_URL: ${POSTGRES_DB_URL}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - "${LOCAL_PORT_BACKEND}:${DOCKER_PORT_BACKEND}"
+    volumes:
+      - ./logs:/app/logs
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_INITDB_ARGS: ${POSTGRES_INITDB_ARGS}
+    ports:
+      - "${LOCAL_PORT_DB}:${DOCKER_PORT_DB}"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
