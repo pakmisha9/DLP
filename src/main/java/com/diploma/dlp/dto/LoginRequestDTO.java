@@ -1,7 +1,6 @@
 package com.diploma.dlp.dto;
 
-
-public class AuthRequest {
+public class LoginRequestDTO {
     private String username;
     private String password;
 

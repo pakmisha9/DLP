@@ -26,7 +26,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String path = request.getRequestURI();
-        if (path.startsWith("/api/auth/login/**") || path.startsWith("/api/auth/users") || path.startsWith("/api/auth/access-token")) {
+        if (path.startsWith("/api/auth/login/**") || path.startsWith("/api/auth/register") || path.startsWith("/api/auth/access-token")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -39,7 +39,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 if (jwtTokenService.isValidAccessToken(token, userDetails.getUsername())) {
                     UsernamePasswordAuthenticationToken authenticationToken =
                             new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-
                     authenticationToken.setDetails(
                             new WebAuthenticationDetailsSource().buildDetails(request)
                     );
@@ -47,7 +46,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 }
             }
         }
-
         filterChain.doFilter(request, response);
     }
 }

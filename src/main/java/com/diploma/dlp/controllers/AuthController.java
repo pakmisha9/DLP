@@ -1,33 +1,34 @@
 package com.diploma.dlp.controllers;
 
-import com.diploma.dlp.dto.AuthRequest;
-import com.diploma.dlp.dto.RefreshTokenRequest;
-import com.diploma.dlp.entities.User;
+import com.diploma.dlp.dto.LoginRequestDTO;
+import com.diploma.dlp.dto.RefreshTokenRequestDTO;
+import com.diploma.dlp.dto.CreateUserDTO;
 import com.diploma.dlp.services.AuthService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+@Validated
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
     @Autowired
     private AuthService authService;
 
-    @PostMapping("/users")
-    public ResponseEntity<?> createUser (@RequestBody User user) {
-        return ResponseEntity.ok(authService.createUser(user));
+    @PostMapping("/register")
+    public ResponseEntity<?> createUser (@Valid @RequestBody CreateUserDTO createUserDTO) {
+        return ResponseEntity.ok(authService.createUser(createUserDTO));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login (@RequestBody AuthRequest authRequest) {
-        return ResponseEntity.ok(authService.login(authRequest));
+    public ResponseEntity<?> login (@RequestBody LoginRequestDTO loginRequestDTO) {
+        return ResponseEntity.ok(authService.login(loginRequestDTO));
     }
 
     @PostMapping("/access-token")
-    public ResponseEntity<?> accessToken (@RequestBody RefreshTokenRequest refreshTokenRequest) {
-        return ResponseEntity.ok(authService.getAccessToken(refreshTokenRequest.getRefreshToken()));
+    public ResponseEntity<?> accessToken (@RequestBody RefreshTokenRequestDTO refreshTokenRequestDTO) {
+        return ResponseEntity.ok(authService.getAccessToken(refreshTokenRequestDTO.getRefreshToken()));
     }
 }

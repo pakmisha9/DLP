@@ -18,5 +18,6 @@ spring:
   security:
     jwt:
       secret-key: "bGVhc3RuZXJ2b3VzYWdvbGlwc25pZ2h0bWVjb25zdGFudGx5c2Nob29sb3JzdGFpcnM="
-      access-token-expiration: 900000
+      access-token-expiration: 1800000
       refresh-token-expiration: 604800000
+debug: false

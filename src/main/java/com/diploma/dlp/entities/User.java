@@ -17,8 +17,6 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @Data
-@Getter
-@Setter
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,25 +25,24 @@ public class User implements UserDetails {
     @Column(name = "username", length = 45, nullable = false, unique = true)
     private String username;
 
+    @Column(name = "phone_number", length = 45, nullable = false, unique = true)
+    private String phoneNumber;
+
+    @Column(name = "email", length = 45, nullable = false, unique = true)
+    private String email;
+
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Column(name = "password", nullable = false)
     private String password;
 
     @Enumerated(value = EnumType.STRING)
+    @Column(name = "role", nullable = true)
     private Role role;
 
-    public String getUsername(){
-        return username;
-    }
-    public String getPassword(){
-        return password;
-    }
-    public Role getRole(){
-        return role;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    @PrePersist
+    public void prePersist() {
+        if (this.role == null) {
+            this.role = Role.USER;
+        }
     }
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
